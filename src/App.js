@@ -6,6 +6,7 @@ import Users from "./components/users/Users";
 import Search from "./components/users/Search";
 import Alert from "./components/layout/Alert";
 import About from "./components/pages/About";
+import User from "./components/users/User";
 import axios from "axios";
 
 class App extends Component {
@@ -26,8 +27,15 @@ class App extends Component {
     setTimeout(() => this.setState({ alert: null }), 5000);
   };
 
+  getUser = async (login) => {
+    const res = await axios.get(`https://api.github.com/users/${login}`);
+    console.log("getUser res.data is: " + res.data);
+    this.setState({ user: res.data });
+  };
+
   state = {
     users: [],
+    user: {},
     alert: null,
   };
   render() {
@@ -54,6 +62,17 @@ class App extends Component {
                 )}
               />
               <Route exact path='/about' component={About} />
+              <Route
+                exact
+                path='/user/:login'
+                render={(props) => (
+                  <User
+                    {...props}
+                    getUser={this.getUser}
+                    user={this.state.user}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
