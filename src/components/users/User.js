@@ -1,15 +1,18 @@
 import React, { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
+import Repos from "../repos/Repos";
 import PropTypes from "prop-types";
 
 export class User extends Component {
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getUserRepos(this.props.match.params.login);
   }
 
   static propTypes = {
     user: PropTypes.object.isRequired,
     getUser: PropTypes.func.isRequired,
+    getUserRepos: PropTypes.func.isRequired,
   };
   render() {
     const {
@@ -92,6 +95,7 @@ export class User extends Component {
           <div className='badge badge-light'>Public repos: {public_repos}</div>
           <div className='badge badge-dark'>Public gists: {public_gists}</div>
         </div>
+        <Repos repos={this.props.repos} />
       </Fragment>
     );
   }

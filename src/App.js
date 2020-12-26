@@ -33,11 +33,21 @@ class App extends Component {
     this.setState({ user: res.data });
   };
 
+  getUserRepos = async (login) => {
+    const res = await axios.get(
+      `https://api.github.com/users/${login}/repos?per_page=5&sort=created:asc`
+    );
+    console.log("getUser res.data is: " + res.data);
+    this.setState({ repos: res.data });
+  };
+
   state = {
     users: [],
     user: {},
+    repos: [],
     alert: null,
   };
+
   render() {
     return (
       <Router>
@@ -69,7 +79,9 @@ class App extends Component {
                   <User
                     {...props}
                     getUser={this.getUser}
+                    getUserRepos={this.getUserRepos}
                     user={this.state.user}
+                    repos={this.state.repos}
                   />
                 )}
               />
